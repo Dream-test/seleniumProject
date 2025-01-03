@@ -3,10 +3,10 @@ package org.webproject;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-public class FullBookData {
+public class BookService {
     OkHttpClient client = new OkHttpClient();
 
-    public String fullBookData(String bookUrl) {
+    public String getData(String bookUrl) {
         String response = "";
         Request request = new Request.Builder()
                 .url(bookUrl)
@@ -17,7 +17,7 @@ public class FullBookData {
         } catch (Exception e) {
             System.out.println("Exception:" + e.getMessage());
         }
-        System.out.println(response);
+        //System.out.println(response);
         return response;
     }
 }
