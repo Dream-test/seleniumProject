@@ -1,4 +1,4 @@
-package otg.webproject;
+package org.webproject;
 
 import com.codeborne.selenide.*;
 import org.openqa.selenium.By;

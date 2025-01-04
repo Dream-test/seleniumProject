@@ -1,4 +1,4 @@
-package otg.webproject;
+package org.webproject;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

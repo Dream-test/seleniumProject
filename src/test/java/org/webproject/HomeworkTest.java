@@ -1,4 +1,4 @@
-package otg.webproject;
+package org.webproject;
 
 import java.util.List;
 import com.codeborne.selenide.*;
