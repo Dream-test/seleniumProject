@@ -1,4 +1,4 @@
-package otg.webproject;
+package org.webproject;
 
 import com.github.javafaker.Faker;
 import org.openqa.selenium.*;

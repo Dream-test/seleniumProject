@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -58,25 +59,42 @@ public class Main {
                 .collect(Collectors.toList());
     }
 
-    public static void printFullBookInfoToTerminal(String bookUrl) throws JsonProcessingException {
-        String bookIsbn = bookUrl.replaceAll("\\D+", "");
-        String newFullBookDataUrl = "https://demoqa.com/BookStore/v1/Book?ISBN=" + bookIsbn;
-        FullBookData currentBookData = new FullBookData();
-        String fullBookInfo = currentBookData.fullBookData(newFullBookDataUrl);
+    public static void printFullBookInfoToTerminal(String bookUrl) throws JsonProcessingException, URISyntaxException {
+        //String bookIsbn = bookUrl.replaceAll("\\D+", "");
+        String newFullBookDataUrl = "https://demoqa.com/BookStore/v1/Book?ISBN=" + extractQueryParam(bookUrl, "book");
+        BookService currentBookData = new BookService();
+        String fullBookInfo = currentBookData.getData(newFullBookDataUrl);
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = objectMapper.readValue(fullBookInfo, new TypeReference<Map<String, Object>>() {});
+        Book currentBook = objectMapper.readValue(fullBookInfo, Book.class);
+        System.out.println(currentBook);
+
+        /*Map<String, Object> map = objectMapper.readValue(fullBookInfo, new TypeReference<Map<String, Object>>() {});
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
+        } */
 
     }
 
-    public static void printAllFullBookInfoToTerminal(WebDriver driver) throws JsonProcessingException {
+    public static void printAllFullBookInfoToTerminal(WebDriver driver) throws JsonProcessingException, URISyntaxException {
         List<String> allBooksUrls = getAllBookUrls(driver);
         for (String bookUrl : allBooksUrls) {
             printFullBookInfoToTerminal(bookUrl);
             System.out.println(" ");
         }
+    }
 
+    public static String extractQueryParam(String url, String paramName) throws URISyntaxException {
+        URI uri = new URI(url);
+        String query = uri.getQuery();
+        if (query != null) {
+            String[] queryParts = query.split("&");
+            for (String part : queryParts) {
+                String[] keyValue = part.split("=");
+                if (keyValue.length == 2 && keyValue[0].equals(paramName)) {
+                    return keyValue[1];
+                }
+            }
+        }
+        return null;
     }
 }
